@@ -1,7 +1,7 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { usersApiSlice } from "../features/users/usersApiSlice";
+import { cryptoApiSlice } from "../features/crypto/cryptoApiSlice";
 import { isRejectedWithValue } from "@reduxjs/toolkit";
 import type { MiddlewareAPI, Middleware } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ const rtkQueryErrorLogger: Middleware =
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(usersApiSlice);
+const rootReducer = combineSlices(cryptoApiSlice);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -30,7 +30,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
     // and other useful features of `rtk-query`.
     middleware: getDefaultMiddleware => {
       return getDefaultMiddleware().concat(
-        usersApiSlice.middleware,
+        cryptoApiSlice.middleware,
         rtkQueryErrorLogger,
       );
     },

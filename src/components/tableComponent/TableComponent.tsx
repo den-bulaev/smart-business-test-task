@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+import { FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+
 import type {
   Column,
   ColumnDef,
@@ -54,17 +58,21 @@ const TableComponent = <T extends {}>(props: ITableProps<T>) => {
   });
 
   return (
-    <div className="p-2 flex flex-col text-[calc(10px+1vmin)] w-[100%]">
+    <div className="p-[15px] flex flex-1 content-center flex-col text-[calc(10px+1vmin)] w-[100%]">
       {data.length ? (
         <>
           <div className="overflow-auto">
-            <table className="max-w-[100%] mb-[30px]">
+            <table className="mb-[30px]">
               <thead>
                 {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => {
                       return (
-                        <th key={header.id} colSpan={header.colSpan}>
+                        <th
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className="p-[5px]"
+                        >
                           {header.isPlaceholder ? null : (
                             <>
                               <div
@@ -81,8 +89,12 @@ const TableComponent = <T extends {}>(props: ITableProps<T>) => {
                                   header.getContext(),
                                 )}
                                 {{
-                                  asc: " 🔼",
-                                  desc: " 🔽",
+                                  asc: (
+                                    <FaLongArrowAltDown className="inline h-[15px]" />
+                                  ),
+                                  desc: (
+                                    <FaLongArrowAltUp className="inline h-[15px]" />
+                                  ),
                                 }[header.column.getIsSorted() as string] ??
                                   null}
                               </div>
@@ -129,28 +141,28 @@ const TableComponent = <T extends {}>(props: ITableProps<T>) => {
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
               >
-                {"<<"}
+                <MdKeyboardDoubleArrowLeft />
               </button>
               <button
                 className="border rounded p-1"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
-                {"<"}
+                <MdKeyboardArrowLeft />
               </button>
               <button
                 className="border rounded p-1"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
-                {">"}
+                <MdKeyboardArrowRight />
               </button>
               <button
                 className="border rounded p-1"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
               >
-                {">>"}
+                <MdKeyboardDoubleArrowRight />
               </button>
               <span className="flex items-center gap-1">
                 <div>Page</div>
