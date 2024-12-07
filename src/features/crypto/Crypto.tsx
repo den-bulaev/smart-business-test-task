@@ -7,15 +7,20 @@ import LoaderComponent from "../../components/loaderComponent/LoaderComponent";
 
 import { useGetCryptoQuery } from "./cryptoApiSlice";
 import type { IPairData } from "./interfaces";
+import { transformPair } from "./utils";
 
-const Users: React.FC = () => {
-  const { data, isError, isLoading, isSuccess } = useGetCryptoQuery(encodeURIComponent('["BTCUSDT","BNBUSDT","ETHUSDT","SOLUSDT","USDCUSDT","XRPUSDT","DOGEUSDT","TONUSDT","TRXUSDT","ADAUSDT","AVAXUSDT","BTCUSDC"]'));
+const Pairs: React.FC = () => {
+  const { data, isError, isLoading, isSuccess } = useGetCryptoQuery(
+    encodeURIComponent(
+      '["BTCUSDT","BNBUSDT","ETHUSDT","SOLUSDT","USDCUSDT","XRPUSDT","DOGEUSDT","TONUSDT","TRXUSDT","ADAUSDT","AVAXUSDT","BTCUSDC"]',
+    ),
+  );
 
   const columns = useMemo<ColumnDef<IPairData, any>[]>(
     () => [
       {
         accessorKey: "symbol",
-        cell: info => info.getValue(),
+        cell: info => transformPair(info.getValue()),
         header: () => <span>Pair Name</span>,
         enableColumnFilter: false,
       },
@@ -55,11 +60,13 @@ const Users: React.FC = () => {
   if (isSuccess || isError) {
     return (
       <>
-        <h1 className="m-auto text-[calc(8px+2vmin)]">Crypto statistics for 24hrs</h1>
+        <h1 className="m-auto text-[calc(8px+2vmin)]">
+          Crypto statistics for 24hrs
+        </h1>
         <TableComponent data={data ?? []} columns={columns} />
       </>
     );
   }
 };
 
-export default Users;
+export default Pairs;
